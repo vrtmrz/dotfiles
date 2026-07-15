@@ -37,6 +37,9 @@
 - Where validation requires the published artefact, treat publication, real-environment validation, and merging into the main branch as separate checkpoints. Keep the release pull request in draft and leave the main branch unchanged until validation succeeds.
 - If validation of a published release fails, do not move or reuse the published tag. Prepare a new patch release so that published versions remain immutable.
 - Regenerate and include release-time derived artefacts that are consumed externally, such as package metadata, generated type definitions, manifests, or scanner inputs. Verify them as part of the release pull request.
+- Before requiring real-runtime or device validation, assess three boundaries explicitly: whether mocks and injected tests cover the changed consumer behaviour and failure paths, whether unchanged framework or kit behaviour is already guaranteed by upstream contracts and E2E tests, and which device-specific integration remains unverified. Do not repeat upstream real-device tests without a remaining consumer-owned risk.
+- When designing APIs and tests, create explicit injectable boundaries so consumer-owned behaviour can be verified independently, while framework- or kit-owned guarantees can be reused without duplicating their test suites.
+- When automated coverage is sufficient for users, an Obsidian plug-in may use an `x.y.z` version and immutable tag published initially as a GitHub pre-release for BRAT installation. After validation, remove the pre-release designation and merge the exact reviewed release commit into the main branch. If validation fails, leave the tag unchanged and prepare the next patch version.
 
 # Release notes
 
