@@ -26,6 +26,7 @@
 
 # Git and pull requests
 
+- Begin every pull request description with one concise sentence that identifies the kind of change, its purpose, and its principal effect; place the detailed summary, rationale, and verification after it.
 - Choose branch names, commit messages, pull request titles, and pull request bodies for future readers. Describe the purpose and behaviour of the change, rather than the tool or agent that produced it.
 - Do not include assistant or tool branding such as `codex` in branch names, commits, or pull request text unless the user explicitly requests it or the repository has an established requirement.
 - Keep pull request descriptions focused on durable context: the problem, the intended behaviour, important trade-offs, and verification. Exclude incidental handover state and internal agent reasoning.
