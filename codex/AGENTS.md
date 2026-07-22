@@ -24,12 +24,34 @@
 - Apply the fix only after reproducing the defect, then run the same regression test to demonstrate the behaviour change. Run broader checks in proportion to the risk and scope of the change.
 - If automated reproduction is genuinely impractical, document why, define a repeatable manual reproduction and verification procedure before changing the implementation, and state the remaining coverage limitation clearly.
 
-# Git and pull requests
+# Repeatable operational work and handovers
+
+- When the same multi-step inspection, comparison, or state-reconciliation sequence is repeated, identify its stable inputs, outputs, and policy checks. If the workflow is sufficiently general, replace repeated manual reconstruction with a small read-only Inspector which has documented machine-readable output, validation, and focused tests.
+- Keep Inspectors read-only by default. They may gather evidence, evaluate preconditions, and emit exact proposed commands, but they must not perform protected operations, interpret inspection as authorisation, or carry an approval into a later operation.
+- Keep active handovers bounded. Separate current state, durable in-scope work, protected local changes, and next approval gates from dated historical evidence. Archive superseded checkpoints, and do not leave historical present-tense claims where a later agent may mistake them for current state.
+
+# Coordination and approval prompts
+
+- At each user checkpoint, state the current position and briefly outline the next actions. When waiting, identify where the action is needed, what response will resume the work, and which later operations remain paused.
+- Write questions and approval requests as natural prose rather than as a checklist. Use bullets for exact targets, revisions, inputs, alternatives, or decisions when they make the request easier to scan, but keep the question itself in a natural sentence.
+- Present a request in this order: what will be done, what outcome it enables, which exact targets and revisions are included, and how the user should respond or act.
+- Give each requested action a short, easy-to-type response word which is clearly distinct from the other choices currently offered and tersely describes the action.
+- For browser or device authentication, identify the exact operation which is paused, state why authentication is needed, provide the URL, one-time code, and requested scopes when available, specify the reply which will resume work, and list later sensitive operations which remain paused. Resume promptly after confirmation, verify both the authentication result and the external operation, and issue a fresh URL when the authentication session has expired.
+
+# Local paths
+
+- Prefer repository-relative paths when referring to files in a repository. Use a machine-specific absolute path only when it is necessary to identify a local target unambiguously in direct coordination with the user.
+- Do not put machine-specific absolute local paths into committed content. Replace them with repository-relative paths, placeholders, or portable discovery instructions, as appropriate.
+
+# Git, pull requests, and issues
 
 - Begin every pull request description with one concise sentence that identifies the kind of change, its purpose, and its principal effect; place the detailed summary, rationale, and verification after it.
 - Choose branch names, commit messages, pull request titles, and pull request bodies for future readers. Describe the purpose and behaviour of the change, rather than the tool or agent that produced it.
 - Do not include assistant or tool branding such as `codex` in branch names, commits, or pull request text unless the user explicitly requests it or the repository has an established requirement.
 - Keep pull request descriptions focused on durable context: the problem, the intended behaviour, important trade-offs, and verification. Exclude incidental handover state and internal agent reasoning.
+- Write pull request descriptions and issue bodies for readers who do not know the local worktrees, handover, or agent terminology. When repository history matters, describe it in ordinary terms, such as previously completed local work which was not incorporated into the integration branch. Do not use internal labels such as 'recovered work', 'checkpoint', 'slice', or handover headings as the public explanation.
+- Keep maintainer-only preparation and coordination out of public pull request and issue checklists unless a public contributor must act on it. This includes requests for a personal release-note message, approval tokens, local sequencing, and private stopping rules. Translate any relevant state into a reader-facing release condition, such as remaining real-runtime validation.
+- In public progress checklists, distinguish completed behaviour, genuinely remaining release work, and deferred future work. Do not present an undecided contribution or internal candidate as committed release scope.
 - When verification depends on the reporter's environment, distinguish a fix that is expected to resolve an issue from one the reporter has confirmed. Leave the issue open for that confirmation unless the user or repository workflow directs otherwise.
 - Respect explicit user checkpoints before remote state changes such as pushing, publishing, merging, or closing. Announce the intended action at the requested checkpoint, and do not treat approval for one action as approval for a later action.
 
@@ -56,4 +78,3 @@
 - Validate the exact published registry version in representative consumers before promoting it to `latest`. Include clean installation, builds, focused automated tests, and a real-runtime smoke test when UI or platform-adapter behaviour is involved.
 - Prefer manually dispatched automation for deterministic release-pull-request preparation, including version metadata, checks, the release commit, and a draft pull request. Preserve explicit human gates for release-note review, runtime or consumer validation, publication, tagging, and dist-tag promotion.
 - For Obsidian plug-in releases, keep `package.json`, the lockfile, `manifest.json`, and `versions.json` consistent. Record every released plug-in version in `versions.json`, even when `minAppVersion` is unchanged.
-- When a release operation requires browser authentication, state the exact pending operation, provide the authentication URL, and explain what response will resume the work. Resume promptly after confirmation, verify the resulting external state, and issue a fresh URL when the authentication session has expired.
