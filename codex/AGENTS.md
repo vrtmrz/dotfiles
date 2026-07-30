@@ -66,6 +66,14 @@
 - When designing APIs and tests, create explicit injectable boundaries so consumer-owned behaviour can be verified independently, while framework- or kit-owned guarantees can be reused without duplicating their test suites.
 - When automated coverage is sufficient for users, an Obsidian plug-in may use an `x.y.z` version and immutable tag published initially as a GitHub pre-release for BRAT installation. After validation, remove the pre-release designation and merge the exact reviewed release commit into the main branch. If validation fails, leave the tag unchanged and prepare the next patch version.
 
+# Obsidian Community Directory review
+
+- Treat the Community Directory scanner's repository scope as independent from Git, ESLint, and TypeScript exclusions. Before relying on an ignored path or file extension for tests, mocks, generated files, documentation, translations, or build tooling, verify the current scanner list and use an exact recognised name.
+- Keep the first root package script recognised by the scanner as the production plug-in build. Do not repurpose it as an aggregate monorepo or development build. Do not assume that this build runs before source lint. If type-aware review requires generated inputs, use only an audit-stage installation mechanism explicitly supported by the current scanner; `prebuild`, `build`, and `postbuild` are not substitutes when source lint precedes the build.
+- Run the official Obsidian ESLint plug-in locally, but treat the remote review as authoritative for its actual file scope, dependency resolution, and current rule versions. Do not hide production findings with suppression directives or by moving production source into an ignored development location.
+- Before diagnosing a missing or stale directory entry as a release failure, distinguish automated-review failure from documented indexing or README refresh delays, and request the directory's manual release check once before publishing another version.
+- Treat a published Community Directory identifier as immutable. Changes to the identifier, payment classification, archive state, ownership, or other directory administration require explicit maintainer approval and a documented user-impact assessment.
+
 # Release notes
 
 - For vrtmrz Obsidian plug-in releases, follow the established order: `## <version>`, an ordinal date such as `10th July, 2026`, then a brief personal note before categorised changes.
