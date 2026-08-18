@@ -1,0 +1,4 @@
+interface:
+  display_name: "Obsidian Plug-in Release"
+  short_description: "Review and release Obsidian plug-ins safely"
+  default_prompt: "Use $obsidian-plugin-release to prepare and validate this Obsidian plug-in release."

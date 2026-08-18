@@ -1,0 +1,4 @@
+interface:
+  display_name: "npm Package Release"
+  short_description: "Prepare, publish, and promote npm releases safely"
+  default_prompt: "Use $npm-package-release to prepare and validate this npm package release."
