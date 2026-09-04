@@ -18,6 +18,7 @@
 - Before pushing changes which include documentation or user-facing text, review newly added prose for coined or project-specific terminology. Prefer terms already defined by the project, including any glossary or `docs/terms.md`, or explain the behaviour using established general language. Present any necessary new term, its intended meaning, audience, and affected locations to the user for review before the push.
 - Exact code identifiers, established product names, standards terminology, and verbatim interface labels are not new terminology merely because they are absent from the glossary.
 - Use the BBC News style guide as a reference when the preferred British English form is unclear.
+- In projects with multilingual resources, keep changes to the primary-language resources and changes to their translations in separate commits and pull requests.
 
 # Defect handling
 
