@@ -6,3 +6,4 @@
 !.env.example
 credentials/
 secrets/
+__pycache__/
