@@ -90,6 +90,13 @@
 - Complete the repository's required validation. After it passes, repeat or broaden checks only for changed code, a failure, or a named unresolved risk. Do not start another review solely because the previous agent has finished or because time is available.
 - Run implementation workers concurrently only when their file ownership and validation responsibilities are disjoint. Run broad or memory-intensive validation one process at a time across the parent and all agents, following the host resource limits.
 
+## Waiting for agents and commands
+
+- Give every `wait_agent` call an explicit `timeout_ms` with enough time for useful progress. Use roughly twice the estimated remaining work time; use `120000` when the duration is unclear. For substantial implementation or review, `300000` or longer is appropriate when supported by the estimate.
+- Agent notifications can end a wait early. Read the notification, check whether the required work is complete, and wait again when it is still running. After a timeout, update the estimate before waiting again. Keep the timeout long enough for the work; avoid shortening it merely to check status or replacing the wait with repeated `list_agents` calls or requests for progress.
+- For ongoing commands and CI, normally wait `30000` to `60000` milliseconds per tool call and collect the relevant status together. Avoid repeated one-second `write_stdin` polls. Use shorter waits when interactive input or a time-sensitive response requires them.
+- These durations are waiting limits, not fixed sleeps. Clamp them to the tool's supported range and any higher-priority responsiveness or progress-reporting requirements. Completion or user input should be handled promptly when the tool returns early.
+
 # Maintaining shared guidance and agents
 
 - Treat `codex/AGENTS.md`, `codex/agents/`, and `codex/skills/` in this repository as the sources for the shared configuration. Edit those sources and run `./install.sh`; installed agent files are copies.
