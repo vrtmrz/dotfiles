@@ -1,6 +1,6 @@
 name = "luna_worker_light"
-description = "GPT-5.6 Luna worker at medium for exact mechanical changes in named files with an existing verification method."
-model = "gpt-5.6-luna"
+description = "GPT-6 Luna worker at medium for exact mechanical changes in named files with an existing verification method."
+model = "gpt-6-luna"
 model_reasoning_effort = "medium"
 sandbox_mode = "workspace-write"
 

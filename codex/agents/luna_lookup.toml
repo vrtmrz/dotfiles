@@ -1,6 +1,6 @@
 name = "luna_lookup"
-description = "Read-only GPT-5.6 Luna agent at medium for direct factual retrieval from named sources with explicit comparison or extraction criteria."
-model = "gpt-5.6-luna"
+description = "Read-only GPT-6 Luna agent at medium for direct factual retrieval from named sources with explicit comparison or extraction criteria."
+model = "gpt-6-luna"
 model_reasoning_effort = "medium"
 sandbox_mode = "read-only"
 

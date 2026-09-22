@@ -1,6 +1,6 @@
 name = "luna_worker"
-description = "GPT-5.6 Luna implementation worker for clear, bounded fixes, tests, mechanical changes, scoped refactoring, documentation, and configuration updates."
-model = "gpt-5.6-luna"
+description = "GPT-6 Luna implementation worker for clear, bounded fixes, tests, mechanical changes, scoped refactoring, documentation, and configuration updates."
+model = "gpt-6-luna"
 model_reasoning_effort = "max"
 sandbox_mode = "workspace-write"
 

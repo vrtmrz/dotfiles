@@ -34,6 +34,12 @@ class InstallTests(unittest.TestCase):
         self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
         return result
 
+    def add_public_detail(self, name='architecture.md', content='# Public detail\n'):
+        detail = self.repository / 'codex' / 'guidance' / name
+        detail.parent.mkdir(parents=True, exist_ok=True)
+        detail.write_text(content)
+        return detail
+
     def test_installs_regular_agent_files_and_links_public_guidance(self):
         self.install()
         target = self.configuration / 'agents' / self.agent.name
@@ -112,6 +118,74 @@ class InstallTests(unittest.TestCase):
         self.assertEqual(backups[0].read_text(), '# Existing guidance\n')
         self.assertEqual(target.resolve(), self.guidance)
         self.assertEqual((self.home_directory / '.agents' / 'skills' / 'example').resolve(), skill)
+
+    def test_installs_public_detail_as_a_regular_file(self):
+        detail = self.add_public_detail(content='# Public detail only\n')
+
+        self.install()
+
+        target = self.configuration / 'guidance' / 'public' / detail.name
+        self.assertTrue(target.is_file(), 'The public detail file was not installed')
+        self.assertFalse(target.is_symlink())
+        self.assertEqual(target.read_bytes(), detail.read_bytes())
+        self.assertEqual(stat.S_IMODE(target.stat().st_mode), 0o600)
+        self.assertNotIn('Public detail only', (self.configuration / 'AGENTS.md').read_text())
+
+    def test_preserves_public_detail_replacement_and_other_namespace_files(self):
+        detail = self.add_public_detail(content='# Current public detail\n')
+        public_guidance = self.configuration / 'guidance' / 'public'
+        private_guidance = self.configuration / 'guidance' / 'private'
+        public_guidance.mkdir(parents=True)
+        old_target = public_guidance / detail.name
+        old_target.write_text('# Previous public detail\n')
+        unrelated = public_guidance / 'personal.md'
+        unrelated.write_text('# Personal detail\n')
+        private_detail = private_guidance / 'local.md'
+        private_detail.parent.mkdir(parents=True)
+        private_detail.write_text('# Private detail\n')
+
+        self.install()
+
+        backups = list(public_guidance.glob(detail.name + '.backup.*'))
+        self.assertEqual(len(backups), 1)
+        self.assertEqual(backups[0].read_text(), '# Previous public detail\n')
+        self.assertEqual(old_target.read_bytes(), detail.read_bytes())
+        self.assertFalse(old_target.is_symlink())
+        self.assertEqual(stat.S_IMODE(old_target.stat().st_mode), 0o600)
+        self.assertEqual(unrelated.read_text(), '# Personal detail\n')
+        self.assertEqual(private_detail.read_text(), '# Private detail\n')
+
+    def test_repeated_installation_keeps_identical_public_detail(self):
+        detail = self.add_public_detail()
+        self.install()
+        target = self.configuration / 'guidance' / 'public' / detail.name
+        self.assertTrue(target.is_file(), 'The public detail file was not installed')
+        before = target.stat()
+
+        self.install()
+
+        after = target.stat()
+        self.assertEqual((before.st_ino, before.st_mtime_ns), (after.st_ino, after.st_mtime_ns))
+        self.assertEqual(list(target.parent.glob('*.backup.*')), [])
+
+    def test_updates_public_details_when_combined_guidance_is_unchanged(self):
+        detail = self.add_public_detail(content='# First detail version\n')
+        initial_content = '# First detail version\n'
+        (self.configuration / 'AGENTS.private.md').write_text('# Private guidance\n')
+        self.install()
+        target = self.configuration / 'guidance' / 'public' / detail.name
+        combined = self.configuration / 'AGENTS.md'
+        combined_before = combined.stat()
+        detail.write_text('# Updated detail version\n')
+
+        self.install()
+
+        self.assertTrue(target.is_file(), 'The public detail file was not installed')
+        self.assertEqual(target.read_text(), '# Updated detail version\n')
+        self.assertEqual(combined.stat().st_mtime_ns, combined_before.st_mtime_ns)
+        backups = list(target.parent.glob(detail.name + '.backup.*'))
+        self.assertEqual(len(backups), 1)
+        self.assertEqual(backups[0].read_text(), initial_content)
 
 
 if __name__ == '__main__':
