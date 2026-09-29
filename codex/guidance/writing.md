@@ -5,7 +5,7 @@
   - **Developers:** `CONTRIBUTING.md` and developer documentation explain architecture, implementation details, validation, and release work.
   - **Agents:** `AGENTS.md` records working rules and repository-specific constraints needed to perform changes safely.
 - Do not copy incidental local diagnostics, handover state, or agent-only reasoning into user or developer documentation unless that audience gains a durable, actionable benefit from it.
-- Where a repository maintains an `Unreleased` section or another mechanism for release notes, include user-facing changes in that mechanism in the same pull request as the implementation. During release preparation, reconcile the changes included in the release with its notes and address missing entries before finalising them.
+- Where a repository maintains an `Unreleased` section or another mechanism for release notes, include user-facing changes in that mechanism in the same pull request as the implementation. During release preparation, reconcile the notes with the cumulative user-facing changes since the last stable release. Include changes from intervening pre-releases which never became stable, without presenting older stable behaviour as new. Preserve historical entries and address missing changes before finalising the target notes.
 
 # Documentation language and style
 

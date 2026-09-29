@@ -7,9 +7,9 @@
 | Before this work | Read under the guidance root |
 |---|---|
 | Drafting or editing repository documentation, code comments, product text, handovers, commit messages, or PR/issue text; pushing changes containing documentation or user-facing text | `public/writing.md` |
-| Naming a branch; preparing a commit, PR, or issue; updating public progress; performing a Git or release operation that changes remote state | `public/git-workflow.md` |
+| Naming or creating a branch; creating a worktree; preparing a commit, PR, or issue; updating public progress; performing a Git or release operation that changes remote state | `public/git-workflow.md` |
 | Starting or assigning work to a subagent, or coordinating ongoing agents and command/CI waits | `public/delegation.md` |
-| Creating a worktree; preparing a handover, session transition, or worktree cleanup; designing a repeated operational inspection | `public/handovers.md` |
+| Creating a worktree; preparing or resuming from a handover; preparing a session transition or worktree cleanup; designing a repeated operational inspection | `public/handovers.md` |
 
 # Language and identifiers
 
@@ -20,7 +20,7 @@
 # Task progress and design changes
 
 - Continue work authorised by the user's request and earlier approvals. Make routine implementation decisions within the established scope and design, stating material assumptions when useful.
-- When a design has been agreed with the user or presented as the basis for implementation, explain any necessary change, its reason, and its effect on behaviour, compatibility, and scope. Obtain the user's agreement before implementing that change. Approval of the original design does not authorise a revised design.
+- Keep implementation within the agreed or presented design. Check added persistent state, recovery paths, and failure scenarios against that scope. For a design change, explain its reason and effects on behaviour, compatibility, and scope, and obtain agreement before implementation. Approval of the original design does not authorise a revised design; routine implementation choices within it need no new approval.
 - Investigation needed to assess a possible design change and work independent of that change may continue within existing authorisation. Pause the work that depends on the unresolved decision.
 - Before requesting approval for an operation subject to a user checkpoint, complete the preparation already authorised and present a concrete, reviewable target. Preparation must remain within the agreed or declared design. Identify the affected files or logical change groups, their purpose, and the uncommitted changes included in the operation; a file count alone is insufficient.
 
@@ -48,7 +48,7 @@
 
 # Defect handling
 
-- Before changing production code for a defect, add the smallest practical automated regression test. Run it against the unmodified implementation and confirm failure for the expected behaviour; dependency, fixture, permission, and environment failures are setup problems.
+- Establish expected behaviour from the current specification and agreed scope before declaring a defect; intentional rejection or an unmet dependency is not by itself a defect. Before changing production code for a defect, add the smallest practical automated regression test. Run it against the unmodified implementation and confirm failure for the expected behaviour; dependency, fixture, permission, and environment failures are setup problems.
 - Fix only after reproducing the defect, then rerun that test and broader checks proportionate to risk and scope.
 - If automated reproduction is genuinely impractical, document why and define repeatable manual reproduction and verification before editing; report the coverage limitation.
 - When changing an expectation, explain how the original fixture maps to the agreed behaviour and retain coverage of that scenario with behavioural assertions.
