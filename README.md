@@ -11,7 +11,7 @@ Public, version-controlled personal configuration.
 
 ## AI-assisted maintenance
 
-I use OpenAI Codex to help maintain my projects, with GPT-6 Sol at `xhigh` or
+I use OpenAI Codex to help maintain my projects, with GPT-6.1 Sol at `xhigh` or
 `max`, or GPT-6 Astra, as the main agent. This repository publishes the shared
 guidance and GPT-6 Luna subagent definitions used in that workflow. I make the
 final design decisions. The main agent develops design proposals, analyses
