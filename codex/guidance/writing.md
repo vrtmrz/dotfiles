@@ -7,6 +7,16 @@
 - Do not copy incidental local diagnostics, handover state, or agent-only reasoning into user or developer documentation unless that audience gains a durable, actionable benefit from it.
 - Where a repository maintains an `Unreleased` section or another mechanism for release notes, include user-facing changes in that mechanism in the same pull request as the implementation. During release preparation, reconcile the notes with the cumulative user-facing changes since the last stable release. Include changes from intervening pre-releases which never became stable, without presenting older stable behaviour as new. Preserve historical entries and address missing changes before finalising the target notes.
 
+# Release notes and change explanations
+
+- Establish the reader's problem and the observable outcome before drafting. If the implementation or pull request does not explain the purpose, follow the relevant issue, design decision, or specification. Check that the implementation and verification support the claimed benefit; do not infer it from an API name or a list of changed files.
+- Structure substantive notes as outcome, method, then supporting explanation:
+  1. State what improves for the reader, the problem resolved, or the supported behaviour that changes.
+  2. Explain the change that produces that result and why it addresses the problem.
+  3. Add the conditions, defaults, compatibility effects, remaining limitations, or actions needed to use it correctly.
+- When a note needs a hierarchy, put the outcome in the parent item and the method and explanation beneath it. Match the depth to the change; a simple correction does not need three padded paragraphs. Keep package-consumer outcomes distinct from application end-user outcomes.
+- Distinguish removing a cause, reducing occurrence, detecting a problem, limiting harm, and restoring use. Describe an accepted limitation or a recovery improvement accurately; do not claim that its underlying cause has been eliminated. State the scope established by the evidence rather than implying a universal guarantee.
+
 # Documentation language and style
 
 - Write repository documentation and product text in the language required by the repository or explicitly requested for the artefact. When neither specifies a language, follow the repository's established primary language.

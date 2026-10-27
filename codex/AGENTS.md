@@ -8,6 +8,7 @@
 |---|---|
 | Drafting or editing repository documentation, code comments, product text, handovers, commit messages, or PR/issue text; pushing changes containing documentation or user-facing text | `public/writing.md` |
 | Naming or creating a branch; creating a worktree; preparing a commit, PR, or issue; updating public progress; performing a Git or release operation that changes remote state | `public/git-workflow.md` |
+| Assessing material defect impact, prioritising fixes, or deciding whether a risk should block a release or change the design | `public/risk-assessment.md` |
 | Starting or assigning work to a subagent, or coordinating ongoing agents and command/CI waits | `public/delegation.md` |
 | Creating a worktree; preparing or resuming from a handover; preparing a session transition or worktree cleanup; designing a repeated operational inspection | `public/handovers.md` |
 
@@ -48,6 +49,8 @@
 
 # Defect handling
 
+- Separate specification compliance, practical harm, and corrective priority. Give irreversible loss of user information particular weight; safe manual conflict resolution is not severe merely because it requires user action.
+- If the impact, recovery guarantees, rating, or trade-off remains ambiguous enough to change the decision, review the evidence and alternatives with the collaborating user before making that decision or implementing dependent changes. Continue investigation and independently authorised work; do not force a score or silently choose an interpretation.
 - Establish expected behaviour from the current specification and agreed scope before declaring a defect; intentional rejection or an unmet dependency is not by itself a defect. Before changing production code for a defect, add the smallest practical automated regression test. Run it against the unmodified implementation and confirm failure for the expected behaviour; dependency, fixture, permission, and environment failures are setup problems.
 - Fix only after reproducing the defect, then rerun that test and broader checks proportionate to risk and scope.
 - If automated reproduction is genuinely impractical, document why and define repeatable manual reproduction and verification before editing; report the coverage limitation.
