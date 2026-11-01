@@ -9,13 +9,18 @@
 
 # Release notes and change explanations
 
-- Establish the reader's problem and the observable outcome before drafting. If the implementation or pull request does not explain the purpose, follow the relevant issue, design decision, or specification. Check that the implementation and verification support the claimed benefit; do not infer it from an API name or a list of changed files.
-- Structure substantive notes as outcome, method, then supporting explanation:
-  1. State what improves for the reader, the problem resolved, or the supported behaviour that changes.
-  2. Explain the change that produces that result and why it addresses the problem.
-  3. Add the conditions, defaults, compatibility effects, remaining limitations, or actions needed to use it correctly.
-- When a note needs a hierarchy, put the outcome in the parent item and the method and explanation beneath it. Match the depth to the change; a simple correction does not need three padded paragraphs. Keep package-consumer outcomes distinct from application end-user outcomes.
-- Distinguish removing a cause, reducing occurrence, detecting a problem, limiting harm, and restoring use. Describe an accepted limitation or a recovery improvement accurately; do not claim that its underlying cause has been eliminated. State the scope established by the evidence rather than implying a universal guarantee.
+- Before drafting release notes, read [the examples and published sample](release-notes-examples.md). Use them to judge relevance and detail, while following the repository's own release format.
+- Start from the reader's goal: what they want to do, what previously prevented or complicated it, and what the release now enables or resolves. A feature name, implementation change, or claim of greater robustness does not establish that purpose. If the pull request does not explain it, follow the relevant issue, design decision, or specification. Check that the implementation and verification support the claimed benefit.
+- Structure substantive notes as reader outcome, how to use or obtain it when action is needed, then supporting explanation:
+  1. State what the reader can now do, the problem resolved, or the supported behaviour that changes.
+  2. Give any relevant operation, setting, or migration needed to obtain that result. Do not invent a user action for an automatic correction.
+  3. Add the conditions, defaults, compatibility effects, remaining limitations, and precautions needed to use it correctly. Explain implementation only where it helps the reader understand the outcome or make a decision.
+- Keep ordinary entries short. One clear sentence can be enough; use subordinate items for necessary methods, conditions, and precautions. Do not force every entry into three parts, repeat the outcome, or turn test assertions and ordinary correctness guarantees into additional release highlights.
+- Distinguish existing behaviour, corrections, new improvements, and retired behaviour against the previous release baseline. Use change-type sections such as `Fixed`, `Improved`, and `Sunset` above feature groups where the repository has no contrary convention. Give independent audiences, such as CLI users, a separate section when this makes their changes easier to find.
+- For retired behaviour, lead with the supported replacement or unified workflow, then explain what has been retired, the compatibility effects, and any action required. Do not hide removal under a vague improvement or imply that a newly removed behaviour was already unavailable.
+- Keep package-consumer outcomes distinct from application end-user outcomes. For routine dependency updates with no benefit or action needing separate explanation, a single summary such as 'Updated dependencies.' under `Miscellaneous` is sufficient. Do not list every package, version, internal API, or upstream fix. When an update has a material user-visible effect, describe that effect in the relevant section, with package detail only where useful. Omit upstream changes which do not affect the released product.
+- Preserve relevant issue or contribution references and acknowledgements without expanding an upstream change into an unrelated product feature. A brief, supported outcome under `Miscellaneous` can be enough; do not invent a benefit merely to justify an acknowledgement.
+- Distinguish removing a cause, reducing occurrence, detecting a problem, limiting harm, and restoring use. An update which prevents new damage does not necessarily repair existing copies. Describe the scope established by the evidence rather than implying a universal guarantee.
 
 # Documentation language and style
 
