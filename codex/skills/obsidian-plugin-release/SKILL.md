@@ -1,6 +1,6 @@
 ---
 name: obsidian-plugin-release
-description: Prepare, review, validate, publish, or promote Obsidian plug-in releases. Use for BRAT pre-releases, Community Directory review, scanner and official ESLint constraints, manifest and version consistency, GitHub Release promotion, release notes, or Obsidian-specific runtime validation; do not use for ordinary feature development with no release-readiness work.
+description: Prepare, validate, publish, or promote Obsidian plug-in releases, including BRAT and Community Directory review. Use for release readiness, not ordinary feature development.
 ---
 
 # Obsidian plug-in releases

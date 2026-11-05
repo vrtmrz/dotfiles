@@ -1,6 +1,6 @@
 ---
 name: npm-package-release
-description: Prepare, stage, publish, validate, or promote npm package releases. Use for release pull requests, trusted or staged publication, provenance and checksum review, registry artefact validation, pre-release and stable dist-tags, consumer verification, or publication failure recovery; do not use for ordinary dependency installation or unreleased package development.
+description: Prepare, publish, validate, or promote npm releases, including staged publication and dist-tags. Use for release work, not ordinary installation or unreleased development.
 ---
 
 # npm package releases
