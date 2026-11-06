@@ -6,6 +6,12 @@
 - When resuming a task, read its canonical handover and the specifications or runbooks relevant to the next action. Check that prerequisite revisions and decisions still apply before implementation. Follow the named sources rather than searching conversation history by default; investigate a specific gap only when needed.
 - Store handovers, patches, and evidence which must survive cleanup outside the worktrees or temporary directories being removed. Preserve the required referenced artefacts as well as the memo, update their links, and verify the saved contents and any patches needed to resume work before deleting the originals.
 
+## LabNotes and session boundaries
+
+- An active LabNote can be the canonical task handover. Refresh its PROGRESS, decisions, validation, and next approval gate before a transfer; preserve the same path for continuation instead of creating a second competing account of the task.
+- A change of objective or subsystem with recoverable completed work and distinct acceptance criteria is a useful session boundary. Propose a focused new session with the note and prerequisites, and continue authorised work until the user agrees. A completed phase alone does not authorise stopping or moving the remaining work.
+- Keep the parent note concise when work is split: link independent notes, their owners and dependencies, and the results needed for integration. Apply [LabNote guidance](labnotes.md) when creating or updating these records.
+
 ## Worktrees and durable records
 
 - Before creating a worktree, identify any existing task handover and a durable location outside the repository's worktrees. Creating a worktree alone does not require a new handover.

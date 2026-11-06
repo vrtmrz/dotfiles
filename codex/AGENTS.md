@@ -6,6 +6,7 @@
 
 | Before this work | Read under the guidance root |
 |---|---|
+| Starting or resuming substantive multi-step investigation, design, implementation, or review; maintaining a LabNote | `public/labnotes.md` |
 | Drafting or editing repository documentation, code comments, product text, handovers, commit messages, or PR/issue text; pushing changes containing documentation or user-facing text | `public/writing.md` |
 | Naming or creating a branch; creating a worktree; preparing a commit, PR, or issue; updating public progress; performing a Git or release operation that changes remote state | `public/git-workflow.md` |
 | Assessing material defect impact, prioritising fixes, or deciding whether a risk should block a release or change the design | `public/risk-assessment.md` |
@@ -19,6 +20,8 @@
 - Preserve existing code identifiers and exact API, protocol, command-line, and interface spellings. New identifiers follow the surrounding module's established conventions; do not impose prose spelling on code or rename an interface merely to make it British English.
 
 # Task progress and design changes
+
+- Maintain a canonical LabNote for substantive multi-step work, following `public/labnotes.md`. Update it at material changes and before planned context/session transitions; after compaction or resuming, read its PROGRESS and the evidence needed next.
 
 - Continue work authorised by the user's request and earlier approvals. Make routine implementation decisions within the established scope and design, stating material assumptions when useful.
 - Keep implementation within the agreed or presented design. Check added persistent state, recovery paths, and failure scenarios against that scope. For a design change, explain its reason and effects on behaviour, compatibility, and scope, and obtain agreement before implementation. Approval of the original design does not authorise a revised design; routine implementation choices within it need no new approval.

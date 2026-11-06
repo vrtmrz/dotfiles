@@ -74,6 +74,7 @@ for them, rather than importing their contents automatically at startup.
 
 | File under `codex/guidance/` | Read before |
 |---|---|
+| `labnotes.md` | Substantive multi-step work and maintaining its canonical LabNote |
 | `writing.md` | Documentation, comments, product text, or publication text |
 | `git-workflow.md` | Branch naming, commit/PR/issue preparation, or remote Git operations |
 | `delegation.md` | Assigning subagents or coordinating agents and command waits |
@@ -85,6 +86,8 @@ conventions; British English prose rules do not require renaming them.
 Task handovers and required attachments belong in a durable external location
 accessible from every worktree. Creating a worktree alone does not require a
 new handover.
+
+LabNotes preserve purposes, decisions, progress, and validation in an external Markdown record. They start with PROGRESS and link detailed evidence. The [labnote skill](codex/skills/labnote/SKILL.md) provides a template and a Python helper for listing progress, marking a stable task identifier, and appending comments. Read its template when creating a note; its instructions are not copied into every task record. Local location and naming policies belong in private guidance.
 
 Private detail files use the separate `guidance/private/` namespace. The public
 installer leaves that namespace and unrelated files untouched. A missing

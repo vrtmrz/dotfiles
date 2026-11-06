@@ -22,6 +22,14 @@
 - Complete the repository's required validation. After it passes, repeat or broaden checks only for changed code, a failure, or a named unresolved risk. Do not start another review solely because the previous agent has finished or because time is available.
 - Run implementation workers concurrently only when their file ownership and validation responsibilities are disjoint. Run broad or memory-intensive validation one process at a time across the parent and all agents, following the host resource limits.
 
+## Choosing the unit of work
+
+- Keep a small task local when that is simpler. Use scripts for deterministic repeated checks and status collection. Delegate when a focused context or bounded ownership saves enough parent work to outweigh handover and integration costs; creating more agents is not itself a token-saving measure.
+- Assign one child a coherent, bounded work loop. An implementation worker should carry its authorised investigation, regression test, change, and focused validation through to the agreed completion condition. Keep scope/design decisions and integration judgement with the parent and user; return those questions before dependent work proceeds. Read-only roles remain read-only.
+- Keep routine commands, retries within scope, and intermediate logs inside that work loop. The parent receives concise results, exact revisions, validation and evidence paths, and unresolved matters. Request intermediate information when it can change a decision or unblock independent work, rather than coaching each command or repeating the child's investigation.
+- When a new objective or subsystem has its own acceptance criteria and substantial work, propose a dedicated session or separately accepted follow-up. Supply the canonical LabNote, prerequisites, protected changes, ownership, and approval boundaries. Reuse the same note for continuation; link a separate note for independent work. Continue currently authorised work until the user agrees to a session switch.
+- Reuse completed validation for the same revision, artefact, and conditions. Repeat a check for changed code, missing coverage, a failure, or a named integration risk, while preserving the required repository checks and resource limits.
+
 ## Waiting for agents and commands
 
 - Give every `wait_agent` call an explicit `timeout_ms` with enough time for useful progress. Use roughly twice the estimated remaining work time; use `120000` when the duration is unclear. For substantial implementation or review, `300000` or longer is appropriate when supported by the estimate.
