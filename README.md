@@ -50,7 +50,10 @@ each directory under `codex/skills/` into `$HOME/.agents/skills/`. It also links
 `codex/AGENTS.md` to `${CODEX_HOME:-$HOME/.codex}/AGENTS.md`. If
 `${CODEX_HOME:-$HOME/.codex}/AGENTS.private.md` exists and is non-empty, the
 installer instead generates `AGENTS.md` from the public guidance followed by
-that private supplement. The installer also copies `codex/guidance/*.md` into
+that private supplement. When a non-empty `AGENTS.device.md` also exists in the
+active Codex home, it is appended after the private guidance. Its owning private
+configuration manages device selection and generates that supplement.
+The installer also copies `codex/guidance/*.md` into
 `${CODEX_HOME:-$HOME/.codex}/guidance/public/` with mode `600`. Run it again
 after changing core or detailed guidance, an agent definition, or a skill. Start
 a new Codex session to load updated global guidance and agent definitions.

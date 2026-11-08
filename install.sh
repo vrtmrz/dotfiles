@@ -7,6 +7,7 @@ source_file="$repo_dir/codex/AGENTS.md"
 target_dir="${CODEX_HOME:-$HOME/.codex}"
 target_file="$target_dir/AGENTS.md"
 private_file="$target_dir/AGENTS.private.md"
+device_file="$target_dir/AGENTS.device.md"
 skills_source_dir="$repo_dir/codex/skills"
 skills_target_dir="$HOME/.agents/skills"
 guidance_source_dir="$repo_dir/codex/guidance"
@@ -44,7 +45,7 @@ install_file() {
 
     if [[ -f "$target_path" && ! -L "$target_path" ]] &&
        cmp -s -- "$source_path" "$target_path"; then
-        chmod 600 -- "$target_path"
+        chmod 600 "$target_path"
         printf '%s\n' "Already installed: $target_path"
         return
     fi
@@ -82,6 +83,10 @@ if [[ -s "$private_file" ]]; then
         cat -- "$source_file"
         printf '\n\n'
         cat -- "$private_file"
+        if [[ -s "$device_file" ]]; then
+            printf '\n\n'
+            cat -- "$device_file"
+        fi
     } > "$temporary_file"
 
     if [[ -f "$target_file" && ! -L "$target_file" ]] && cmp -s -- "$temporary_file" "$target_file"; then

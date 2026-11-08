@@ -18,6 +18,8 @@
 - Follow the repository's required language for documentation and product text, or the requested artefact language; otherwise use the repository's established primary language.
 - For English prose, use British `-ise`/`-isation` spellings, the Oxford comma, logical punctuation, single quotation marks unless the format requires otherwise, and no contractions. Detailed writing guidance applies before the tasks listed above.
 - Preserve existing code identifiers and exact API, protocol, command-line, and interface spellings. New identifiers follow the surrounding module's established conventions; do not impose prose spelling on code or rename an interface merely to make it British English.
+- Write for the intended reader's purpose. Select observable outcomes, practical consequences, and useful next actions according to that purpose. Distinguish user benefits, developer benefits, recovery actions, and requests for diagnostic evidence; include technical detail when it helps that reader understand, decide, or act.
+- Optional, low-risk advice is normally expressed as an impersonal recommendation, such as 'Verification is recommended'. Where an action is needed to prevent concrete harm, use a clear imperative with 'please' and explain the consequence. Preserve actual requirements and required procedural steps. Read `public/writing.md` for the distinctions and examples.
 
 # Task progress and design changes
 

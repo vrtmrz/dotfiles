@@ -13,7 +13,7 @@ class InstallTests(unittest.TestCase):
     def setUp(self):
         self.temporary = tempfile.TemporaryDirectory(prefix='dotfiles-install-')
         self.addCleanup(self.temporary.cleanup)
-        self.root = Path(self.temporary.name)
+        self.root = Path(self.temporary.name).resolve()
         self.repository = self.root / 'repository'
         self.home_directory = self.root / 'home'
         self.configuration = self.root / 'configuration'
@@ -48,6 +48,29 @@ class InstallTests(unittest.TestCase):
         self.assertEqual(target.read_bytes(), self.agent.read_bytes())
         self.assertEqual(stat.S_IMODE(target.stat().st_mode), 0o600)
         self.assertEqual((self.configuration / 'AGENTS.md').resolve(), self.guidance)
+
+    def test_existing_identical_agent_receives_private_permissions(self):
+        target = self.configuration / 'agents' / self.agent.name
+        target.parent.mkdir()
+        target.write_bytes(self.agent.read_bytes())
+        target.chmod(0o644)
+
+        self.install()
+
+        self.assertEqual(stat.S_IMODE(target.stat().st_mode), 0o600)
+        self.assertEqual(target.read_bytes(), self.agent.read_bytes())
+        self.assertEqual(list(target.parent.glob('*.backup.*')), [])
+
+    def test_combines_the_explicit_device_supplement_after_private_guidance(self):
+        private = self.configuration / 'AGENTS.private.md'
+        private.write_text('# Private guidance\n')
+        device = self.configuration / 'AGENTS.device.md'
+        device.write_text('# Explicit device guidance\n')
+
+        self.install()
+
+        combined = (self.configuration / 'AGENTS.md').read_text()
+        self.assertTrue(combined.endswith(private.read_text() + '\n\n' + device.read_text()))
 
     def test_preserves_a_different_definition_and_unrelated_agent(self):
         agents = self.configuration / 'agents'

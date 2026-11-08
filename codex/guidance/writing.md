@@ -7,6 +7,34 @@
 - Do not copy incidental local diagnostics, handover state, or agent-only reasoning into user or developer documentation unless that audience gains a durable, actionable benefit from it.
 - Where a repository maintains an `Unreleased` section or another mechanism for release notes, include user-facing changes in that mechanism in the same pull request as the implementation. During release preparation, reconcile the notes with the cumulative user-facing changes since the last stable release. Include changes from intervening pre-releases which never became stable, without presenting older stable behaviour as new. Preserve historical entries and address missing changes before finalising the target notes.
 
+# Reader benefit, notices, and diagnostics
+
+- Identify the intended reader and the understanding, decision, or action each statement should enable. State developer benefits as such; support a claimed user benefit with an actual effect on the user's work.
+- User-facing notices explain the observable result, affected scope, whether work can continue, and a proportionate next action where those facts are known and useful. Distinguish complete, partial, and failed outcomes. Preserve uncertainty rather than inventing reassurance or a remedy.
+- Technical detail belongs where it helps its intended reader. Diagnostics retain the operation, affected target, result, and remaining state or retry behaviour. Internal stages and detailed causes alone do not explain their effect on the user's work.
+- Keep recovery actions distinct from requests to collect evidence for investigation. A report request explains how to obtain the report through an available route; it does not imply that generating a report restores operation.
+
+For a hypothetical application which offers a 'Generate report' action:
+
+- **Not good:** 'Local database initialisation failed. See the log.' This reports an internal stage and leaves the effect on the user's work and the route to the evidence unclear.
+- **Good:** 'Some files could not be synchronised. Other files can continue to synchronise. For investigation, a report can be created using Generate report.' This distinguishes the partial result and the purpose of the report. Use this wording only when continued synchronisation and the named action are supported.
+
+# Recommendations and instructions
+
+- Optional, low-risk advice is normally expressed as an impersonal statement of the recommendation, preferably with passive wording such as 'Verification is recommended'. State the useful check or benefit where it adds context. 'Verification should be recommended' instead instructs someone to make a recommendation; use it only when that is the intended meaning.
+- When an action is needed to prevent concrete harm, use a clear imperative with 'please', identify the action and its timing, and explain the relevant consequence. Courtesy preserves the strength of the instruction; avoid wording which makes a necessary safeguard sound optional.
+- Preserve actual requirements, approval boundaries, and required steps in a procedure, including requirements whose purpose is correctness rather than safety. This preference applies to the strength of advice and warnings; it does not convert requirements into recommendations or require passive wording throughout a procedure.
+
+For an optional visual check of a reversible formatting change:
+
+- **Not good:** 'Verify the preview before continuing.' This presents optional advice as a prerequisite.
+- **Good:** 'A preview check is recommended to confirm the layout.' This states the recommendation and its purpose.
+
+For a database replacement which would discard changes absent from the replacement:
+
+- **Not good:** 'A backup is recommended before replacing the database.' This makes a necessary safeguard sound optional.
+- **Good:** 'Please back up the current database before replacing it. Changes absent from the replacement would otherwise be lost.' This gives a courteous, direct instruction and explains the concrete harm.
+
 # Release notes and change explanations
 
 - Before drafting release notes, read [the examples and published sample](release-notes-examples.md). Use them to judge relevance and detail, while following the repository's own release format.
