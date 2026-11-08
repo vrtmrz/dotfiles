@@ -4,10 +4,17 @@
 
 Updated: {date and time with timezone}
 Owner/session: {current writer and session reference}
-Target: {repository or source, working location, branch, and revision where applicable}
+Related sessions: {known creating, previous, or related session references, or N.P.}
+Device: {explicit device ID, or unknown}
+Recorded environment: {OS and architecture; host, sandbox, or container; relevant observed restrictions}
+Target: {owning repository, source, or artefact identity}
+Worktree: {portable path to the main working copy or linked worktree on the recorded device; additional targets in the body, or N.A. with a reason}
+Branch / HEAD: {branch and commit, or other revision; N.A. with a reason where appropriate}
 Protected local changes: {paths and purpose, or N.P.}
 Pending decisions/approvals: {exact scope and status, or N.P.}
 Related work: {relative links, or N.P.}
+Preservation: {local working note; selected Notion, Git, both, or local continuation; scope and prepared or verified state, or not yet chosen}
+Resume from: {exact local note identity or verified saved-copy reference; required evidence and recovery gaps, or N.P.}
 
 - [x] [P01] {completed work with evidence}
 - [ ] [P02] Next: {one concrete next action}

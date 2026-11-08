@@ -90,7 +90,7 @@ Task handovers and required attachments belong in a durable external location
 accessible from every worktree. Creating a worktree alone does not require a
 new handover.
 
-LabNotes preserve purposes, decisions, progress, and validation in an external Markdown record. They start with PROGRESS and link detailed evidence. The [labnote skill](codex/skills/labnote/SKILL.md) provides a template and a Python helper for listing progress, marking a stable task identifier, and appending comments. Read its template when creating a note; its instructions are not copied into every task record. Local location and naming policies belong in private guidance.
+LabNotes preserve purposes, decisions, progress, and validation in an external Markdown record. Their PROGRESS section identifies the recorded session, device, environment, repository, portable working location, and revision, together with the preservation state and resume source. Detailed evidence is linked separately. The [labnote skill](codex/skills/labnote/SKILL.md) provides a template and a Python helper for listing progress, marking a stable task identifier, and appending comments. At an agreed session end or handover, the chosen preservation route can be a readable Notion article, a Git snapshot with necessary attachments, both, or local continuation. Ordinary updates do not publish notes. Read the template when creating a note; its instructions are not copied into every task record. Local locations, naming policies, and private archive destinations belong in private guidance.
 
 Private detail files use the separate `guidance/private/` namespace. The public
 installer leaves that namespace and unrelated files untouched. A missing
