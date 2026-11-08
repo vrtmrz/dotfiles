@@ -10,14 +10,17 @@
 # Reader benefit, notices, and diagnostics
 
 - Identify the intended reader and the understanding, decision, or action each statement should enable. State developer benefits as such; support a claimed user benefit with an actual effect on the user's work.
-- User-facing notices explain the observable result, affected scope, whether work can continue, and a proportionate next action where those facts are known and useful. Distinguish complete, partial, and failed outcomes. Preserve uncertainty rather than inventing reassurance or a remedy.
-- Technical detail belongs where it helps its intended reader. Diagnostics retain the operation, affected target, result, and remaining state or retry behaviour. Internal stages and detailed causes alone do not explain their effect on the user's work.
+- User-facing notices present a coherent account of the event relevant to the user, its consequences for the user's work, and the action the user can take. Relate these parts to the user's activity and choices, with enough context to understand the situation and act. Distinguish complete, partial, and failed outcomes, and preserve uncertainty about causes and effects. When no action is needed, state that only where it is useful and supported.
+- Internal terms can help connect the relevant event, its effect on the user's work, and the next action. Use them for that explanatory purpose, with causal links where established. Naming an internal error and listing system states leaves the reader to reconstruct their practical meaning. Detailed diagnostics retain the operation, affected target, result, and remaining state or retry behaviour.
+- When adapting a message for a UI, CLI, or another audience, preserve the event, outcome, affected scope, and uncertainty. Add effects on particular features, assurances about continued use, navigation paths, log locations, or retry commands only when those details are established.
 - Keep recovery actions distinct from requests to collect evidence for investigation. A report request explains how to obtain the report through an available route; it does not imply that generating a report restores operation.
 
-For a hypothetical application which offers a 'Generate report' action:
+For a hypothetical application where a failed file scan prevents local database initialisation and the operational effect is not yet established:
 
-- **Not good:** 'Local database initialisation failed. See the log.' This reports an internal stage and leaves the effect on the user's work and the route to the evidence unclear.
-- **Good:** 'Some files could not be synchronised. Other files can continue to synchronise. For investigation, a report can be created using Generate report.' This distinguishes the partial result and the purpose of the report. Use this wording only when continued synchronisation and the named action are supported.
+- **Not good:** 'An internal error has occurred. The local database has not been initialised.' This lists what the system reports without relating it to an event relevant to the user, its practical consequences, or a useful response.
+- **Good:** 'Several files could not be scanned. As a result, the local database could not be initialised. Normal operation may be affected. Please check the log for details.' This connects an event relevant to the user's activity, its possible effect on operation, and the user's next action. The internal state explains the connection; it does not stand alone as the message's purpose.
+
+Use a more specific operational effect when it is known, and identify the log or its access route when the reader would otherwise have to guess. These are explanation criteria, not a fixed sentence count or a requirement to invent a cause or consequence.
 
 # Recommendations and instructions
 
