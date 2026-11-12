@@ -65,11 +65,11 @@ Resume from: {exact local note identity or verified saved-copy reference; requir
 
 ### Actually implemented
 
-{Changes actually made and their purpose labels, or an explicit not-started/N.A. entry.}
+{Changes made and their purpose labels; otherwise Not reached — prerequisite/condition, not started if already applicable, or N.A. with a scope reason.}
 
 ### Differences from the plan and Reasons for design-changes
 
-{Differences, reasons, affected purposes, and agreement references, or N.P.}
+{Differences, reasons, affected purposes, and agreement references; N.P. after comparison found none, or Not reached — prerequisite/condition.}
 
 ## Testing
 
@@ -79,13 +79,13 @@ Resume from: {exact local note identity or verified saved-copy reference; requir
 
 ### Actual results
 
-{Revision/artefact, commands, conditions, results, and evidence links; separate failures, limitations, and unverified expectations.}
+{Revision/artefact, commands, conditions, results, and evidence links; separate failures and limits. Use Not reached — prerequisite/condition before the testing stage, not verified for outstanding checks, or N.A. with a scope reason.}
 
 ## Assessment
 
 ### Conclusion
 
-{Which purposes are met, unmet, or not yet evaluated, with evidence.}
+{Which purposes are met or unmet, with evidence. Use Not reached — prerequisite/condition only before this assessment is applicable; otherwise record the outstanding assessment or verification.}
 
 ### Notable analysis
 
