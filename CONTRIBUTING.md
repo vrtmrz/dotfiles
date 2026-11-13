@@ -9,7 +9,7 @@ configuration and session records outside this repository.
 Run the shell syntax check and the focused installer tests:
 
 ```sh
-bash -n install.sh
+bash -n install.sh install4agy.sh
 python3 -m unittest discover -s tests -v
 ```
 

@@ -4,7 +4,7 @@
 
 - Maintain one canonical Markdown LabNote for substantive, multi-step investigation, design, implementation, or review. Use it to preserve the purpose, decisions, evidence, current progress, and next action across context compaction and sessions. Routine questions and small, self-contained edits need no new note.
 - Reuse an existing task note or handover where practical. A LabNote can serve as the canonical handover; keep one source of current task state. It complements the established task tracker and does not authorise external task or issue creation.
-- Use `assets/labnote-template.md` in the installed `labnote` skill (normally `~/.agents/skills/labnote/`). Read the template when creating a note, and initialise it with known facts and explicit pending states before substantial exploration. Use the task's requested language. Keep sample implementations and measurements out of real notes unless independently established.
+- Use `assets/labnote-template.md` in the installed `labnote` skill (normally `{{SKILLS_ROOT}}/labnote/`). Read the template when creating a note, and initialise it with known facts and explicit pending states before substantial exploration. Use the task's requested language. Keep sample implementations and measurements out of real notes unless independently established.
 
 ## Location and ownership
 

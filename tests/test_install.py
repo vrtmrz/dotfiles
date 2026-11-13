@@ -21,6 +21,7 @@ class InstallTests(unittest.TestCase):
         self.configuration.mkdir()
         (self.repository / 'codex' / 'agents').mkdir(parents=True)
         shutil.copy2(Path(__file__).resolve().parents[1] / 'install.sh', self.repository / 'install.sh')
+        shutil.copy2(Path(__file__).resolve().parents[1] / 'install4agy.sh', self.repository / 'install4agy.sh')
         self.guidance = self.repository / 'codex' / 'AGENTS.md'
         self.guidance.write_text('# Public guidance\n')
         self.agent = self.repository / 'codex' / 'agents' / 'luna_lookup.toml'
@@ -28,8 +29,11 @@ class InstallTests(unittest.TestCase):
         self.environment = dict(os.environ)
         self.environment.update(HOME=str(self.home_directory), CODEX_HOME=str(self.configuration))
 
-    def install(self):
-        result = subprocess.run(['bash', str(self.repository / 'install.sh')], env=self.environment,
+    def install(self, script='install.sh', extra_env=None):
+        environment = dict(self.environment)
+        if extra_env:
+            environment.update(extra_env)
+        result = subprocess.run(['bash', str(self.repository / script)], env=environment,
                                 text=True, capture_output=True)
         self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
         return result
@@ -209,6 +213,156 @@ class InstallTests(unittest.TestCase):
         backups = list(target.parent.glob(detail.name + '.backup.*'))
         self.assertEqual(len(backups), 1)
         self.assertEqual(backups[0].read_text(), initial_content)
+
+    def test_install4agy_filters_sections_expands_placeholders_and_skips_toml_agents(self):
+        self.guidance.write_text(
+            'Root: {{GUIDANCE_ROOT}}\n'
+            '<!-- @only: codex -->\nCodex only section\n<!-- @end -->\n'
+            '<!-- @only: agy -->\nAgy only section\n<!-- @end -->\n'
+            'Shared line\n'
+        )
+        self.add_public_detail('codex_only.md', '<!-- @targets: codex -->\n# Codex only\n')
+        self.add_public_detail('shared.md', '# Shared\nSkills: {{SKILLS_ROOT}}\n')
+        codex_skill = self.repository / 'codex' / 'skills' / 'codex-only'
+        codex_skill.mkdir(parents=True)
+        (codex_skill / 'SKILL.md').write_text('---\nname: codex-only\n---\n<!-- @targets: codex -->\n')
+        shared_skill = self.repository / 'codex' / 'skills' / 'shared-skill'
+        shared_skill.mkdir(parents=True)
+        (shared_skill / 'SKILL.md').write_text('---\nname: shared-skill\n---\n')
+
+        agy_config = self.home_directory / '.gemini' / 'config'
+        agy_config.mkdir(parents=True)
+        legacy_link = agy_config / 'AGENTS.md'
+        legacy_link.symlink_to(self.configuration / 'AGENTS.md')
+        (agy_config / 'AGENTS.private.md').write_text('# Agy private\n')
+
+        self.install('install4agy.sh')
+
+        installed = (agy_config / 'AGENTS.md').read_text()
+        self.assertFalse((agy_config / 'AGENTS.md').is_symlink())
+        self.assertEqual(len(list(agy_config.glob('AGENTS.md.backup.*'))), 1)
+        self.assertIn('Root: ~/.gemini/config/guidance', installed)
+        self.assertIn('Agy only section', installed)
+        self.assertNotIn('Codex only section', installed)
+        self.assertNotIn('<!-- @only:', installed)
+        self.assertFalse((agy_config / 'agents').exists())
+        public_guidance = agy_config / 'guidance' / 'public'
+        self.assertFalse((public_guidance / 'codex_only.md').exists())
+        self.assertEqual((public_guidance / 'shared.md').read_text(), '# Shared\nSkills: ~/.gemini/skills\n')
+        skills_dir = self.home_directory / '.gemini' / 'skills'
+        self.assertFalse((skills_dir / 'codex-only').exists())
+        self.assertEqual((skills_dir / 'shared-skill').resolve(), shared_skill)
+
+    def test_codex_install_renders_directives_and_rejects_unclosed_blocks(self):
+        self.guidance.write_text(
+            'Root: {{GUIDANCE_ROOT}}\n'
+            '<!-- @only: codex -->\nCodex section\n<!-- @end -->\n'
+            '<!-- @only: agy -->\nAgy section\n<!-- @end -->\n'
+        )
+        self.install()
+        target = self.configuration / 'AGENTS.md'
+        self.assertFalse(target.is_symlink())
+        self.assertEqual(target.read_text(), 'Root: ${CODEX_HOME:-$HOME/.codex}/guidance\nCodex section\n')
+
+        self.guidance.write_text('<!-- @only: codex -->\nUnclosed\n')
+        failed = subprocess.run(['bash', str(self.repository / 'install.sh')], env=self.environment,
+                                text=True, capture_output=True)
+        self.assertNotEqual(failed.returncode, 0)
+        self.assertEqual(target.read_text(), 'Root: ${CODEX_HOME:-$HOME/.codex}/guidance\nCodex section\n')
+
+    def test_renders_templated_skills_per_target_idempotently(self):
+        templated = self.repository / 'codex' / 'skills' / 'templated-skill'
+        (templated / 'scripts').mkdir(parents=True)
+        (templated / 'agents').mkdir()
+        (templated / 'references').mkdir()
+        (templated / 'SKILL.md').write_text(
+            '---\nname: templated-skill\ndescription: Baked skill.\n---\n'
+            'Dir: {{SKILLS_ROOT}}/templated-skill\n'
+            'Exec: python3 {{SKILLS_SHELL_ROOT}}/templated-skill/scripts/run.py\n'
+            '<!-- @only: codex -->\nCodex tip\n<!-- @end -->\n'
+            '<!-- @only: agy -->\nAgy tip\n<!-- @end -->\n'
+        )
+        (templated / 'references' / 'guide.md').write_text('Guidance: {{GUIDANCE_ROOT}}\n')
+        (templated / 'agents' / 'openai.yaml').write_text('interface:\n  display_name: "Templated"\n')
+        runner = templated / 'scripts' / 'run.py'
+        runner.write_text('#!/usr/bin/env python3\nprint("ok")\n')
+        runner.chmod(0o755)
+
+        legacy_codex = self.home_directory / '.agents' / 'skills'
+        legacy_codex.mkdir(parents=True)
+        (legacy_codex / 'templated-skill').symlink_to(templated)
+
+        self.install('install.sh')
+        codex_installed = legacy_codex / 'templated-skill'
+        self.assertFalse(codex_installed.is_symlink())
+        self.assertEqual(list(legacy_codex.glob('*.backup.*')), [])
+        codex_backups = list((self.configuration / 'backups' / 'skills').glob('templated-skill.backup.*'))
+        self.assertEqual(len(codex_backups), 1)
+        self.assertTrue(codex_backups[0].is_symlink())
+        self.assertEqual(codex_backups[0].resolve(), templated)
+        self.assertEqual(
+            (codex_installed / 'SKILL.md').read_text(),
+            '---\nname: templated-skill\ndescription: Baked skill.\n---\n'
+            'Dir: ~/.agents/skills/templated-skill\n'
+            'Exec: python3 $HOME/.agents/skills/templated-skill/scripts/run.py\n'
+            'Codex tip\n'
+        )
+        self.assertEqual((codex_installed / 'references' / 'guide.md').read_text(),
+                         'Guidance: ${CODEX_HOME:-$HOME/.codex}/guidance\n')
+        self.assertTrue((codex_installed / 'agents' / 'openai.yaml').is_file())
+        self.assertTrue(os.access(codex_installed / 'scripts' / 'run.py', os.X_OK))
+
+        self.install('install.sh')
+        self.assertEqual(len(list((self.configuration / 'backups' / 'skills').glob('templated-skill.backup.*'))), 1)
+
+        legacy_agy = self.home_directory / '.gemini' / 'skills'
+        legacy_agy.mkdir(parents=True)
+        (legacy_agy / 'templated-skill').symlink_to(templated)
+
+        self.install('install4agy.sh')
+        agy_installed = legacy_agy / 'templated-skill'
+        self.assertFalse(agy_installed.is_symlink())
+        self.assertEqual(list(legacy_agy.glob('*.backup.*')), [])
+        agy_backups = list((self.home_directory / '.gemini' / 'config' / 'backups' / 'skills').glob(
+            'templated-skill.backup.*'
+        ))
+        self.assertEqual(len(agy_backups), 1)
+        self.assertEqual(
+            (agy_installed / 'SKILL.md').read_text(),
+            '---\nname: templated-skill\ndescription: Baked skill.\n---\n'
+            'Dir: ~/.gemini/skills/templated-skill\n'
+            'Exec: python3 $HOME/.gemini/skills/templated-skill/scripts/run.py\n'
+            'Agy tip\n'
+        )
+        self.assertEqual((agy_installed / 'references' / 'guide.md').read_text(),
+                         'Guidance: ~/.gemini/config/guidance\n')
+        self.assertFalse((agy_installed / 'agents').exists())
+        self.assertTrue(os.access(agy_installed / 'scripts' / 'run.py', os.X_OK))
+
+        self.install('install4agy.sh')
+        self.assertEqual(list(legacy_agy.glob('*.backup.*')), [])
+
+    def test_rendered_skill_shell_command_handles_spaces_in_home(self):
+        spaced_home = self.root / 'home with spaces'
+        spaced_home.mkdir()
+        skill = self.repository / 'codex' / 'skills' / 'labnote'
+        (skill / 'scripts').mkdir(parents=True)
+        (skill / 'SKILL.md').write_text(
+            '---\nname: labnote\ndescription: LabNote helper.\n---\n'
+            '```sh\npython3 "{{SKILLS_SHELL_ROOT}}/labnote/scripts/labnote.py" ok\n```\n'
+        )
+        (skill / 'scripts' / 'labnote.py').write_text(
+            'import sys\nprint("ARGS:" + "|".join(sys.argv[1:]))\n'
+        )
+        env = dict(self.environment)
+        env.update(HOME=str(spaced_home), CODEX_HOME=str(spaced_home / '.codex'))
+        self.install('install.sh', extra_env=env)
+        skill_md = (spaced_home / '.agents' / 'skills' / 'labnote' / 'SKILL.md').read_text()
+        cmd_line = [line for line in skill_md.splitlines() if 'labnote.py' in line][0]
+        self.assertEqual(cmd_line, 'python3 "$HOME/.agents/skills/labnote/scripts/labnote.py" ok')
+        run = subprocess.run(['sh', '-c', cmd_line], env=env, text=True, capture_output=True)
+        self.assertEqual(run.returncode, 0, run.stderr)
+        self.assertEqual(run.stdout.strip(), 'ARGS:ok')
 
 
 if __name__ == '__main__':

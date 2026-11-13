@@ -16,7 +16,7 @@ Apply shared Obsidian release policy without replacing the repository's own rele
    - Read [release-lifecycle.md](references/release-lifecycle.md) for version metadata, BRAT pre-releases, promotion, immutable releases, and runtime-validation boundaries.
    - Read [community-directory.md](references/community-directory.md) for scanner scope, build and lint ordering, listing delays, or directory administration.
    - Read [release-notes.md](references/release-notes.md) when drafting or reviewing release notes.
-5. If the work also publishes an npm package, use `$npm-package-release` for the registry publication and dist-tag portion.
+5. If the work also publishes an npm package, use the `npm-package-release` skill for the registry publication and dist-tag portion.
 6. Run focused local checks before any protected operation, then report completed evidence, remaining real-environment validation, and the next approval gate separately.
 
 ## Boundaries

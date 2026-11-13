@@ -7,14 +7,14 @@ description: Inspect and make explicit checklist updates in an existing LabNote 
 
 Use the bundled CLI to inspect or update progress in an existing LabNote within the authorised task. Supply the note path every time; the CLI does not choose a recent note or infer task completion.
 
-Run the script from the installed skill directory:
+Run `scripts/labnote.py` from the installed skill directory (`{{SKILLS_ROOT}}/labnote/`):
 
 ```sh
-python3 "$HOME/.agents/skills/labnote/scripts/labnote.py" list /path/to/note.md
-python3 "$HOME/.agents/skills/labnote/scripts/labnote.py" list /path/to/note.md --json
-python3 "$HOME/.agents/skills/labnote/scripts/labnote.py" mark /path/to/note.md P02 done
-python3 "$HOME/.agents/skills/labnote/scripts/labnote.py" mark /path/to/note.md P02 todo
-python3 "$HOME/.agents/skills/labnote/scripts/labnote.py" comment /path/to/note.md P02 "Observed result; evidence: evidence/run.json"
+python3 "{{SKILLS_SHELL_ROOT}}/labnote/scripts/labnote.py" list /path/to/note.md
+python3 "{{SKILLS_SHELL_ROOT}}/labnote/scripts/labnote.py" list /path/to/note.md --json
+python3 "{{SKILLS_SHELL_ROOT}}/labnote/scripts/labnote.py" mark /path/to/note.md P02 done
+python3 "{{SKILLS_SHELL_ROOT}}/labnote/scripts/labnote.py" mark /path/to/note.md P02 todo
+python3 "{{SKILLS_SHELL_ROOT}}/labnote/scripts/labnote.py" comment /path/to/note.md P02 "Observed result; evidence: evidence/run.json"
 ```
 
 If the skill is installed elsewhere, use that installed path. IDs are stable labels such as `P02`; keep them unchanged when reordering tasks. Use `mark` only after the task state has been decided from the work and its evidence. Use `comment` to record dated results, reasons, evidence, or explicit pending states. The script makes no semantic judgement.

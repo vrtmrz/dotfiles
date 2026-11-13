@@ -1,6 +1,6 @@
 # Task-specific guidance
 
-- The core rules below apply throughout the task. Detailed Markdown guidance is read on demand; these files are not automatically imported. Resolve the guidance root as `${CODEX_HOME:-$HOME/.codex}/guidance`. Use the public or private subdirectory shown in each reference.
+- The core rules below apply throughout the task. Detailed Markdown guidance is read on demand; these files are not automatically imported. Resolve the guidance root as `{{GUIDANCE_ROOT}}`. Use the public or private subdirectory shown in each reference.
 - Read applicable files before their triggering action. Re-evaluate when the task changes or resumes after handover. Reuse current guidance already read; do not load all files by default.
 - If a required file is missing or unreadable, report the exact path, recover it from its owning source where authorised, and pause only work that depends on it. Continue independently authorised work. Pass applicable paths and requirements to subagents.
 
@@ -64,9 +64,16 @@
 
 # Delegation and validation
 
+<!-- @only: codex -->
 - Use Luna agents when bounded delegation saves time or keeps noisy intermediate work out of the main context and its benefit exceeds coordination cost. Keep small tasks local when that is simpler.
 - The user makes final design, architecture, and scope decisions. The main agent develops proposals, assesses trade-offs, coordinates implementation, and owns integration. Keep ambiguous cross-cutting analysis and high-risk integration assessment in the main agent.
 - `luna_explorer` is read-only investigation and `luna_worker` is implementation within clear requirements and ownership; both use their configured `max` effort. Use `luna_lookup` or `luna_worker_light` at `medium` only for named sources or files, a known result or exact transformation, and an existing verification method. A small diff alone does not qualify. Read `public/delegation.md` before assigning work.
+<!-- @end -->
+<!-- @only: agy -->
+- Prefer handling small or focused investigations, edits, and command checks directly in the main agent, batching independent tool calls per turn to minimise round-trips. Delegate via `invoke_subagent` sparingly—only when isolating noisy logs or broad searches, or running substantial bounded work clearly saves net context and cost.
+- The user makes final design, architecture, and scope decisions. The main agent develops proposals, assesses trade-offs, coordinates implementation, and owns integration. Keep ambiguous cross-cutting analysis and high-risk integration assessment in the main agent.
+- Default `research` and simple lookup or extraction subagents to `flash` (or `flash_lite` for trivial high-volume work); reserve `inherit` or `pro` for complex bounded implementation (`self` or `define_subagent`). Run at most one subagent at a time by default, avoid duplicate review subagents, and never start `swarm` unless explicitly requested by the user. Read `public/delegation.md` before assigning work.
+<!-- @end -->
 - Complete required repository validation. After it passes, broaden or repeat checks only for changed code, a failure, or a named unresolved risk. Avoid duplicate investigations and reviews that cannot change a decision.
 - Parallel implementation requires disjoint ownership and validation responsibilities. Run broad or memory-intensive validation one process at a time across all agents and worktrees.
 
@@ -77,5 +84,10 @@
 
 # Maintaining shared configuration
 
+<!-- @only: codex -->
 - Edit the owning sources: `codex/AGENTS.md`, `codex/guidance/`, `codex/agents/`, and `codex/skills/` in the public configuration repository. Run its `./install.sh` after changes; installed agent and guidance files are copies.
+<!-- @end -->
+<!-- @only: agy -->
+- Edit the owning sources: `codex/AGENTS.md`, `codex/guidance/`, and `codex/skills/` in the public configuration repository. Run its `./install4agy.sh` after changes; installed guidance files are copies.
+<!-- @end -->
 - Keep private guidance, skills, and service details in their owning private repository. Keep private agent names distinct from public ones, with one source of truth for each installed definition.

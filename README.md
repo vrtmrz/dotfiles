@@ -44,19 +44,35 @@ Clone the repository, then run:
 ./install.sh
 ```
 
-By default, the installer copies the TOML files under `codex/agents/` into
+For Antigravity CLI (`agy`), run:
+
+```sh
+./install4agy.sh
+```
+
+By default, `./install.sh` (`--target codex`) copies the TOML files under `codex/agents/` into
 `${CODEX_HOME:-$HOME/.codex}/agents/` as regular files with mode `600`. It links
-each directory under `codex/skills/` into `$HOME/.agents/skills/`. It also links
-`codex/AGENTS.md` to `${CODEX_HOME:-$HOME/.codex}/AGENTS.md`. If
+each plain directory under `codex/skills/` into `$HOME/.agents/skills/`, and installs
+skills containing target directives or placeholders as rendered copies. It also links
+or installs `codex/AGENTS.md` to `${CODEX_HOME:-$HOME/.codex}/AGENTS.md`. If
 `${CODEX_HOME:-$HOME/.codex}/AGENTS.private.md` exists and is non-empty, the
 installer instead generates `AGENTS.md` from the public guidance followed by
 that private supplement. When a non-empty `AGENTS.device.md` also exists in the
 active Codex home, it is appended after the private guidance. Its owning private
 configuration manages device selection and generates that supplement.
 The installer also copies `codex/guidance/*.md` into
-`${CODEX_HOME:-$HOME/.codex}/guidance/public/` with mode `600`. Run it again
+`${CODEX_HOME:-$HOME/.codex}/guidance/public/` with mode `600`.
+
+`./install4agy.sh` (`--target agy`) uses the same shared sources while filtering
+out Codex-only files (`<!-- @targets: codex -->`), Codex-only blocks (`<!-- @only: codex -->`),
+`.toml` agent definitions, and `agents/openai.yaml` metadata in rendered skills,
+expanding placeholders (`{{AGENT_HOME}}`, `{{GUIDANCE_ROOT}}`, `{{SKILLS_ROOT}}`,
+`{{SKILLS_SHELL_ROOT}}`), and writing into `${AGY_CONFIG_HOME:-$HOME/.gemini/config}` and
+`${AGY_SKILLS_HOME:-$HOME/.gemini/skills}`.
+
+Run the appropriate installer again
 after changing core or detailed guidance, an agent definition, or a skill. Start
-a new Codex session to load updated global guidance and agent definitions.
+a new session to load updated global guidance and agent definitions.
 
 This generated composition keeps intentionally public defaults separate from
 private, machine-local preferences. If a different file or skill path already
