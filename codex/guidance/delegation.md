@@ -13,7 +13,7 @@
 <!-- @only: codex -->
 - Use `luna_explorer` for bounded repository investigation, tracing, test and configuration inspection, and log analysis. Treat it as strictly read-only even if inherited runtime permissions would allow writes.
 - Use `luna_worker` for straightforward implementation when the required behaviour, ownership boundary, and acceptance criteria are clear.
-- Use the standard Luna explorer and worker at their configured `max` effort by default. Use `luna_lookup` or `luna_worker_light` at `medium` only when the parent can name the exact source or file scope, the expected answer or transformation, and an existing way to verify it without causal diagnosis, design decisions, or compatibility judgement. A small diff alone does not make a task light.
+- The standard Luna explorer and worker use `max`. Choose `luna_lookup` or `luna_worker_light` at `medium` when the parent can name the exact source or file scope, the expected answer or transformation, and an existing way to verify it without causal diagnosis, design decisions, or compatibility judgement. A small diff alone does not make a task light.
 - Use `luna_lookup` for direct, bounded factual retrieval, selected-field extraction, and comparisons with explicit criteria. Use `luna_worker_light` for an exact mechanical change within named files. If a material ambiguity appears, return the evidence and unresolved question to the parent. The parent should reuse that evidence when assigning any deeper work.
 <!-- @end -->
 <!-- @only: agy -->
@@ -28,7 +28,7 @@
 
 - Give each agent one bounded contract with the question or requirements, relevant context, and a stop condition. For implementation, specify file or module ownership, required behaviour, compatibility constraints, acceptance criteria, and focused validation.
 <!-- @only: codex -->
-- Default to `fork_turns="none"` and pass the required context explicitly. Use a short recent-turn fork only when necessary, and use `all` only with a stated justification.
+- Set `fork_turns="none"` explicitly for each child. Write a self-contained prompt with the objective, relevant evidence, permitted actions, and required result. Ask the child to return any question that would change the scope, together with the evidence needed to decide it.
 <!-- @end -->
 <!-- @only: agy -->
 - Subagents start in a separate conversation context by default, so pass concise context, target paths, and exact constraints directly in the prompt rather than telling the child to reread large trees of files.
@@ -64,7 +64,7 @@
 ## Applicable guidance in delegated work
 
 <!-- @only: codex -->
-- Include the exact applicable guidance paths and reading triggers in the child's contract, especially with `fork_turns="none"`. Pass the relevant rules directly if the child cannot access those files.
+- Include the exact applicable guidance paths and reading triggers in the child's contract. Pass the relevant rules directly if the child cannot access those files.
 <!-- @end -->
 <!-- @only: agy -->
 - Include the exact applicable guidance paths and reading triggers in the child's contract. Pass the relevant rules directly if the child cannot access those files.
