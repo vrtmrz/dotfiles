@@ -4,7 +4,7 @@
 - Use the custom Luna agents proactively when delegation would materially reduce wall-clock time or keep noisy intermediate work out of the main context. Delegate only when the benefit outweighs the coordination cost; the user does not need to request delegation explicitly.
 <!-- @end -->
 <!-- @only: agy -->
-- Delegate conservatively so subagent startup and duplicated context do not waste quota. Keep small or straightforward lookups, searches, and edits in the main agent (batching independent read and search calls in one turn); delegate only when isolating massive intermediate output or delegating substantial bounded work clearly outweighs coordination and token overhead.
+- Delegate proactively when bounded execution, independent read-only auditing, or parallel investigation reduces total cost (including verification and rework), saves wall-clock time, or keeps noisy intermediate output out of the main context; the user does not need to request delegation explicitly. Keep small or straightforward lookups, searches, and local edits in the main agent by batching independent tool calls per turn.
 <!-- @end -->
 - The user makes final design, architecture, and scope decisions. The main agent develops proposals, analyses trade-offs, coordinates implementation and integration within the agreed design, and communicates with the user. Keep ambiguous cross-cutting analysis and high-risk integration assessment in the main agent.
 
@@ -17,10 +17,10 @@
 - Use `luna_lookup` for direct, bounded factual retrieval, selected-field extraction, and comparisons with explicit criteria. Use `luna_worker_light` for an exact mechanical change within named files. If a material ambiguity appears, return the evidence and unresolved question to the parent. The parent should reuse that evidence when assigning any deeper work.
 <!-- @end -->
 <!-- @only: agy -->
-- Use `research` only for broad, noisy, read-only investigation that would otherwise bloat the main context; handle targeted `rg` or bounded `read_file` lookups locally.
-- Use `self` or a transient `define_subagent` worker for substantial bounded implementation when the required behaviour, ownership boundary, and acceptance criteria are clear.
-- Default `Model` to `flash` for `research`, tracing, and bounded lookups, or `flash_lite` for trivial high-volume extraction; use `inherit` or `pro` only when complex multi-file implementation or reasoning genuinely requires it.
-- Run at most one subagent at a time by default, avoid redundant review subagents, and do not use `swarm` unless explicitly requested by the user (when requested, use `workspace: "share"` for concurrent editors and `inherit` for readers/verifiers).
+- Use `research` (or a read-only `define_subagent` auditor) for bounded repository investigation, tracing, log analysis, and independent read-only review of non-trivial or high-risk changes; handle quick targeted lookups locally.
+- Use `self` or a transient `define_subagent` worker for bounded implementation when the required behaviour, ownership boundary, and acceptance criteria are clear. Pair implementation with an independent fresh-context read-only auditor when defects, regressions, or compatibility breaks would be costly, giving the auditor the concrete invariants, specification, diff, and decision-changing questions rather than an open-ended review.
+- Default `Model` to `inherit` so investigation, implementation, and auditing preserve reasoning quality and avoid rework. Use `flash` or `flash_lite` only when explicitly requested or for mechanical, low-risk extraction where a misread is immediately obvious and cheap to fix.
+- Parallel subagents and `swarm` may be launched without an explicit user request when scopes are disjoint and concurrency materially improves turnaround or review independence. Keep concurrency focused rather than fanning out speculatively (typically 2–3 concurrent subagents unless more disjoint units clearly justify it), avoid redundant review passes, and do not nest subagents unless explicitly requested. For concurrent editors use `workspace: "share"` with disjoint file ownership; for readers and auditors use `inherit`.
 <!-- @end -->
 - Handle a small lookup or edit in the main agent when delegation would add more coordination than useful independent work.
 
