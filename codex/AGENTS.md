@@ -70,10 +70,11 @@
 - `luna_explorer` is read-only investigation and `luna_worker` is implementation within clear requirements and ownership; both use their configured `max` effort. Use `luna_lookup` or `luna_worker_light` at `medium` only for named sources or files, a known result or exact transformation, and an existing verification method. A small diff alone does not qualify. Read `public/delegation.md` before assigning work.
 <!-- @end -->
 <!-- @only: agy -->
-- Use `invoke_subagent` proactively when bounded delegation, independent auditing, or parallel execution reduces net cost (including verification and rework) or keeps noisy intermediate work out of the main context. Keep small, straightforward lookups, edits, and command checks local by batching independent tool calls in the main agent.
+- Prefer a provider other than Antigravity for investigation, implementation, and tests. Handle small checks locally when handing them over would cost more.
 - The user makes final design, architecture, and scope decisions. The main agent develops proposals, assesses trade-offs, coordinates implementation, and owns integration. Keep ambiguous cross-cutting analysis and high-risk integration assessment in the main agent.
-- Default subagent `Model` to `inherit` so investigation, implementation (`self` or `define_subagent`), and independent read-only review (`research` or a read-only auditor) avoid rework from underpowered reasoning; reserve `flash` or `flash_lite` for mechanical high-volume extraction or explicit user requests. Run focused parallel subagents or `swarm` when scopes are disjoint and the benefit exceeds coordination and token cost, avoiding unnecessary fan-out and unrequested nested delegation. Read `public/delegation.md` before assigning work.
+- Use parallel workers for disjoint tasks when the benefit exceeds coordination cost. Read `public/delegation.md` before assigning work.
 <!-- @end -->
+- Assign independent audits to a fresh read-only reviewer on a provider other than Antigravity. If none is available, report the pending audit and available options.
 - Complete required repository validation. After it passes, broaden or repeat checks only for changed code, a failure, or a named unresolved risk. Avoid duplicate investigations and reviews that cannot change a decision.
 - Parallel implementation requires disjoint ownership and validation responsibilities. Run broad or memory-intensive validation one process at a time across all agents and worktrees.
 

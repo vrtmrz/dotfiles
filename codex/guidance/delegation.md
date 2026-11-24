@@ -10,6 +10,8 @@
 
 ## Role selection
 
+For an independent audit, use a fresh read-only reviewer on a provider other than Antigravity, separate from the implementer. Prefer a different provider from the implementer when suitably capable. If no eligible reviewer is available, report the audit as pending, state the options, and continue independent work.
+
 <!-- @only: codex -->
 - Use `luna_explorer` for bounded repository investigation, tracing, test and configuration inspection, and log analysis. Treat it as strictly read-only even if inherited runtime permissions would allow writes.
 - Use `luna_worker` for straightforward implementation when the required behaviour, ownership boundary, and acceptance criteria are clear.
@@ -17,14 +19,14 @@
 - Use `luna_lookup` for direct, bounded factual retrieval, selected-field extraction, and comparisons with explicit criteria. Use `luna_worker_light` for an exact mechanical change within named files. If a material ambiguity appears, return the evidence and unresolved question to the parent. The parent should reuse that evidence when assigning any deeper work.
 <!-- @end -->
 <!-- @only: agy -->
-- Use `research` (or a read-only `define_subagent` auditor) for bounded repository investigation, tracing, log analysis, and independent read-only review of non-trivial or high-risk changes; handle quick targeted lookups locally.
-- Use `self` or a transient `define_subagent` worker for bounded implementation when the required behaviour, ownership boundary, and acceptance criteria are clear. Pair implementation with an independent fresh-context read-only auditor when defects, regressions, or compatibility breaks would be costly, giving the auditor the concrete invariants, specification, diff, and decision-changing questions rather than an open-ended review.
-- Default `Model` to `inherit` so investigation, implementation, and auditing preserve reasoning quality and avoid rework. Use `flash` or `flash_lite` only when explicitly requested or for mechanical, low-risk extraction where a misread is immediately obvious and cheap to fix.
+- Prefer a provider other than Antigravity for substantial investigation, implementation, and tests. Keep small local checks with the parent. If substantial work would need to return to Antigravity, explain why and present the available alternatives first.
 - Parallel subagents and `swarm` may be launched without an explicit user request when scopes are disjoint and concurrency materially improves turnaround or review independence. Keep concurrency focused rather than fanning out speculatively (typically 2–3 concurrent subagents unless more disjoint units clearly justify it), avoid redundant review passes, and do not nest subagents unless explicitly requested. For concurrent editors use `workspace: "share"` with disjoint file ownership; for readers and auditors use `inherit`.
 <!-- @end -->
 - Handle a small lookup or edit in the main agent when delegation would add more coordination than useful independent work.
 
 ## Contracts and coordination
+
+Choose the model and its supported reasoning effort separately for each assignment. A bounded fix with a known cause and a discriminating test can use an economical worker. Give deeper reasoning to the specific uncertainty, such as recovery after an interrupted write. Reassess effort once the cause is established. On repeated failure, check the requirement, evidence, and environment before increasing effort.
 
 - Give each agent one bounded contract with the question or requirements, relevant context, and a stop condition. For implementation, specify file or module ownership, required behaviour, compatibility constraints, acceptance criteria, and focused validation.
 <!-- @only: codex -->
